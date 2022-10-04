@@ -1,0 +1,67 @@
+
+
+{% extends 'base.html' %}   
+
+{% block content %}
+
+<html>
+<head>
+ <title>Chuck Norris Random Jokes</title>
+ <style type="text/css">
+  #data {
+    width: 600px;
+    border: 1px dashed black;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 20px;
+  }
+
+  #joke {
+    width: 120px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: block;
+  }
+ </style>
+</head>
+<body> 
+  <button id="joke">Chuck Norris Random Jokes</button>
+  <div id="data" />
+  <script type="text/javascript">
+    function randomFact() {
+      // Llamamos al Servicio Web vía AJAX
+      var xmlhttp = new XMLHttpRequest();
+      var url = "https://api.chucknorris.io/jokes/random";
+      xmlhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+          var json = JSON.parse(this.responseText);
+          // Analizamos la respuesta JSON
+          parseJson(json);
+        }
+      };
+
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    }
+
+    function parseJson(json) {
+      var fact = "<b>" + json["value"] + "</b>";
+      document.getElementById("data").innerHTML = fact;
+    }
+
+    // Finalmente agregamos un detector de eventos de clic en el logo de Chuck Norris
+     // para cargar un nuevo hecho aleatorio cuando el usuario haga clic en él
+    document.getElementById("joke").addEventListener("click", function() {
+      randomFact();
+    });
+
+    randomFact();
+  </script>
+</body>
+</html>
+
+
+{% endblock %}
